@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content%}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    Name:<input type="text" name="name" value="{{userData.name}}" required ><br>
+    Email:<input type="text" name="email" value="{{userData.email}}" required><br>
+    <label for="gender">Gender</label>
+    <label><input type="radio" name="gender"{% if userData.gender == 'male' %}checked {% endif%}
+        value="male" >Male</label>
+    <label><input type="radio" name="gender" {% if userData.gender == 'female'%}checked {% endif%}
+        value="female" } >Female</label><br>
+    <label><input type="checkbox" name="language"  {% if 'spanish' in  userData.get_language %} value="spanish" checked{% endif %}>Spanish</label><br>
+    <label><input type="checkbox" name="language"   {% if 'french' in  userData.get_language %}  value="french"  checked{% endif %}>French</label><br>
+    <label><input type="checkbox" name="language" {% if 'french' in  userData.get_language %}   value="english"  checked{% endif %}>English</label><br>
+
+
+    <label for="country">Country</label><br>
+    <select name="country">
+        <option value="nepal" {% if userData.country == 'nepal' %}selected{%endif%}>Nepal</option>
+        <option value="china" {% if userData.country == 'china' %}selected{%endif%} >China</option>
+        <option value="us" {% if userData.country == 'us' %}selected{%endif%} >US</option>
+    </select>
+    <br>
+    <br>
+    <label for="image">Image</label><br>
+    <input type="file" name="image"><br><br>
+    <button>Update record</button>
+</form>
+{% if userData.image %}
+  <img src="{{userData.image.url}}" width="80" height="80" alt="">
+{% endif %}
+{% endblock content %}
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .a{position: relative; left:500px;bottom:250px}
+    .a1{position: relative;right:30px}
+
+</style>
+<body>
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    Name:<input type="text" name="name" required ><br>
+    Email:<input type="text" name="email" required><br>
+    <label for="gender">Gender</label>
+    <label><input type="radio" name="gender" value="male">Male</label>
+    <label><input type="radio" name="gender" value="female">Female</label><br>
+    <label for="language">Language</label>
+    <label><input type="checkbox" name="language" value="spanish">Spanish</label><br>
+    <label><input type="checkbox" name="language" value="french">French</label><br>
+    <label><input type="checkbox" name="language" value="english">English</label><br>
+    <label for="country">Country</label><br>
+    <select name="country">
+        <option value="nepal">Nepal</option>
+        <option value="china">China</option>
+        <option value="us">US</option>
+    </select>
+    <br>
+    <br>
+    <label for="image">Image</label><br>
+    <input type="file" name="image"><br><br>
+    <button class="btn btn-success">Add button</button>
+</form>
+<table class="a">
+    <thead>
+    <tr>
+        <th class="a1">S.n</th>
+        <th class="a2">Name</th>
+        <th class="a3">Email</th>
+        <th class="a4">Gender</th>
+        <th class="a5">Language</th>
+        <th>Country</th>
+        <th>Image</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in userData %}
+      <tr>
+          <td>{{forloop.counter}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.gender}}</td>
+          <td>
+              {% for language in user.get_language %}
+                {{language}}
+              {% endfor %}
+          </td>
+          <td>{{user.country}}</td>
+          <td>
+              {% if user.image %}
+                <img src="{{user.image.url}}" width="80"  height="80" alt="">
+              {% endif %}
+          </td>
+          <td>
+              <a  href="{% url 'edit' user.id %}">Edit</a>
+              <a href="{% url 'delete' user.id %}">Delete</a>
+          </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
+</body>
+</html>
